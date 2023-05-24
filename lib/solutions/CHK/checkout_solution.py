@@ -7,7 +7,7 @@
 def checkout(skus):
     # Set up checkout dictionary to store all the prices of each item. 
     # This allows us to chnage prices of items later if needed
-    checkout_dict = {'A':50,'B':30,'C':20,'D':15, 'E': 40}
+    checkout_dict = {'A':50,'B':30,'C':20,'D':15, 'E': 40, 'F': 10}
 
     if not isinstance(skus,str):
         # If the input is not a string we immediately return -1
@@ -22,6 +22,9 @@ def checkout(skus):
 
         # Collect num of E
         num_e = 0
+
+        # Collect num of f
+        num_f = 0
 
         # No need to collect other letter as they do not have an offer
 
@@ -42,6 +45,8 @@ def checkout(skus):
             elif letter == 'E':
                 num_e += 1
                 total += checkout_dict['E']
+            elif letter == 'F':
+                total += checkout_dict['10']
             else:
                 # If an incorrect letter is passed we return -1
                 return -1 
@@ -89,6 +94,8 @@ def checkout(skus):
                 return value_b
             else:
                 return 0
+            
+        
 
         # Check the number of E bought:
         offer_E = num_e // 2
@@ -109,6 +116,7 @@ def checkout(skus):
         return total
 
         
+
 
 
 
