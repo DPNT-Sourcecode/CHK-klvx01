@@ -23,18 +23,17 @@ def checkout(skus):
         # No need to collect other letter as they do not have an offer
 
         # Cycle through each sku in the inputted string
-        # Use .upper() to incase a use accidentally types the lowercase version of the letter
         for letter in skus:
-            if letter.upper() == 'A':
+            if letter == 'A':
                 # Collect the number of As
                 num_a += 1
-            elif letter.upper() == 'B':
+            elif letter == 'B':
                 # Collect the number of Bs
                 num_b += 1
-            elif letter.upper() == 'C':
+            elif letter == 'C':
                 # Since C does not have an offer we can directly add its price to the total
                 total += checkout_dict['C']
-            elif letter. upper() == 'D':
+            elif letter == 'D':
                 # Since D does not have an offer we can directly add its price to the total
                 total += checkout_dict['D']
             else:
@@ -68,5 +67,6 @@ def checkout(skus):
         return total
 
         
+
 
 
