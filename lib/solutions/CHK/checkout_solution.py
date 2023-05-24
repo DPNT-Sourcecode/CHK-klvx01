@@ -90,10 +90,14 @@ def checkout(skus):
         # Reduce that number from the number of B bought:
         num_b -= offer_E
 
-        # Use function to calculate the value from the A items
-        value_a = value_from_a(num_a)
-        # Use function to calculate the value from the B items
-        value_b = value_from_b(num_b)
+        
+        if num_a > 0:
+            # Use function to calculate the value from the A items
+            value_a = value_from_a(num_a)
+        
+        if num_b > 0:
+            # Use function to calculate the value from the B items
+            value_b = value_from_b(num_b)
 
         # Add these values to the total
         total += value_a + value_b
@@ -102,4 +106,5 @@ def checkout(skus):
         return total
 
         
+
 
