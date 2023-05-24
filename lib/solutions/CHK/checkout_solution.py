@@ -50,39 +50,45 @@ def checkout(skus):
         # We can use the floor division to see the number of time the customer triggers the offer:
 
         def value_from_a(num_a):
-            # Set value of sum of items A
-            value_a = 0
+            if num_a > 0:
+                # Set value of sum of items A
+                value_a = 0
 
-            # Check to see the number of times the first offer is triggered
-            offer_1_a = num_a // 5
+                # Check to see the number of times the first offer is triggered
+                offer_1_a = num_a // 5
 
-            # Reduce the number of items used to trigger this offer from the original number of As
-            num_a -= (offer_1_a*5)
+                # Reduce the number of items used to trigger this offer from the original number of As
+                num_a -= (offer_1_a*5)
 
-            # Check to see the number of times the second offer is triggered
-            offer_2_a = num_a // 3
-            # Reduce the number of items used to trigger this offer from the original number of As
-            num_a -= (offer_2_a * 3)
-            
-            # Add all the respective values of A
-            value_a += (offer_1_a*200) + (offer_2_a*130) + (num_a * 50) 
+                # Check to see the number of times the second offer is triggered
+                offer_2_a = num_a // 3
+                # Reduce the number of items used to trigger this offer from the original number of As
+                num_a -= (offer_2_a * 3)
+                
+                # Add all the respective values of A
+                value_a += (offer_1_a*200) + (offer_2_a*130) + (num_a * 50) 
 
-            return value_a
+                return value_a
+            else:
+                return 0
 
         def value_from_b(num_b):
-            # Set value of sum of items B
-            value_b = 0
+            if num_b > 0:
+                # Set value of sum of items B
+                value_b = 0
 
-            # Check to see the number of times the offer is triggered
-            offer_b = num_b // 2
+                # Check to see the number of times the offer is triggered
+                offer_b = num_b // 2
 
-            # Reduce the number of items used to trigger this offer from the original number of Bs
-            num_b -= (offer_b*2)
+                # Reduce the number of items used to trigger this offer from the original number of Bs
+                num_b -= (offer_b*2)
 
-            # Add all the respective values of B
-            value_b += (offer_b*45) + (num_b*30)
-            
-            return value_b
+                # Add all the respective values of B
+                value_b += (offer_b*45) + (num_b*30)
+                
+                return value_b
+            else:
+                return 0
 
         # Check the number of E bought:
         offer_E = num_e // 2
@@ -90,14 +96,11 @@ def checkout(skus):
         # Reduce that number from the number of B bought:
         num_b -= offer_E
 
+        # Use function to calculate the value from the A items
+        value_a = value_from_a(num_a)
         
-        if num_a > 0:
-            # Use function to calculate the value from the A items
-            value_a = value_from_a(num_a)
-        
-        if num_b > 0:
-            # Use function to calculate the value from the B items
-            value_b = value_from_b(num_b)
+        # Use function to calculate the value from the B items
+        value_b = value_from_b(num_b)
 
         # Add these values to the total
         total += value_a + value_b
@@ -106,5 +109,6 @@ def checkout(skus):
         return total
 
         
+
 
 
