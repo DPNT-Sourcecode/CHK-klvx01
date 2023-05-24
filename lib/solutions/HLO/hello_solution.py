@@ -11,7 +11,3 @@ def hello(friend_name):
     # Say hello to the inputted string
     else:
         return f"Hello, {friend_name}!"
-
-
-
-
