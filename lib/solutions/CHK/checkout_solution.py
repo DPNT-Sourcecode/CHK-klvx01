@@ -50,52 +50,56 @@ def checkout(skus):
         # We can use the floor division to see the number of time the customer triggers the offer:
 
         def value_from_a(num_a):
+            # Set value of sum of items A
             value_a = 0
 
+            # Check to see the number of times the first offer is triggered
             offer_1_a = num_a // 5
+
+            # Reduce the number of items used to trigger this offer from the original number of As
             num_a -= (offer_1_a*5)
 
+            # Check to see the number of times the second offer is triggered
             offer_2_a = num_a // 3
+            # Reduce the number of items used to trigger this offer from the original number of As
             num_a -= (offer_2_a * 3)
-
+            
+            # Add all the respective values of A
             value_a += (offer_1_a*200) + (offer_2_a*130) + (num_a * 50) 
 
             return value_a
 
         def value_from_b(num_b):
+            # Set value of sum of items B
             value_b = 0
 
+            # Check to see the number of times the offer is triggered
             offer_b = num_b // 2
+
+            # Reduce the number of items used to trigger this offer from the original number of Bs
             num_b -= (offer_b*2)
 
+            # Add all the respective values of B
             value_b += (offer_b*45) + (num_b*30)
+            
+            return value_b
 
-        offer_a = num_a // 3 # number of times the offer for A is triggered
-        offer_a_amount = 130 # the offer amount for A
-        # Same for the offer on B:
-        offer_b = num_b // 2 # number of times the offer for B is triggered
-        offer_b_amount = 45 # the offer amount for B
+        # Check the number of E bought:
+        offer_E = num_e // 2
 
-        # Add everything to to the total:
-        
-        # The value accumulated by offer A
-        total_value_of_offer_a = offer_a_amount*offer_a
-        # Left over value of A items
-        leftover_value_a = checkout_dict['A']*(num_a-(3*offer_a))
+        # Reduce that number from the number of B bought:
+        num_b -= offer_E
 
-        # The value accumulated by offer B:
-        total_value_of_offer_b = offer_b_amount*offer_b
-        # Left over value of B items
-        leftover_value_b = checkout_dict['B']*(num_b-(2*offer_b))
+        # Use function to calculate the value from the A items
+        value_a = value_from_a(num_a)
+        # Use function to calculate the value from the B items
+        value_b = value_from_b(num_b)
 
-        # Add all these values to the total
-        total += total_value_of_offer_a + leftover_value_a + total_value_of_offer_b + leftover_value_b
+        # Add these values to the total
+        total += value_a + value_b
 
-        # Return the total
+        # Return total
         return total
 
         
-
-
-
 
