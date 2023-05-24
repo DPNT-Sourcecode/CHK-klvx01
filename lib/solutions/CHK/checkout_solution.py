@@ -46,7 +46,8 @@ def checkout(skus):
                 num_e += 1
                 total += checkout_dict['E']
             elif letter == 'F':
-                total += checkout_dict['10']
+                num_f += 1
+                total += checkout_dict['F']
             else:
                 # If an incorrect letter is passed we return -1
                 return -1 
@@ -108,14 +109,21 @@ def checkout(skus):
         
         # Use function to calculate the value from the B items
         value_b = value_from_b(num_b)
-
+        
+       
         # Add these values to the total
         total += value_a + value_b
 
+         # Removing added cost of F 
+        offer_F = num_f // 3 # this is the number of free F a customer can get
+
+        # Remove the value of these F from total 
+        total -= (offer_F * checkout_dict['F'])
         # Return total
         return total
 
         
+
 
 
 
