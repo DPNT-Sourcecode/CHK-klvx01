@@ -10,6 +10,7 @@ def checkout(skus):
     checkout_dict = {'A':50,'B':30,'C':20,'D':15}
 
     if not isinstance(skus,str):
+        # If the input is not a string we immediately return -1
         return -1
     else:
         # Set the total for the amount of shopping.
@@ -67,4 +68,5 @@ def checkout(skus):
         return total
 
         
+
 
