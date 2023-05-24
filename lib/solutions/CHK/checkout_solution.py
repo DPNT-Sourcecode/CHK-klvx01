@@ -7,7 +7,7 @@
 def checkout(skus):
     # Set up checkout dictionary to store all the prices of each item. 
     # This allows us to chnage prices of items later if needed
-    checkout_dict = {'A':50,'B':30,'C':20,'D':15}
+    checkout_dict = {'A':50,'B':30,'C':20,'D':15, 'E': 40}
 
     if not isinstance(skus,str):
         # If the input is not a string we immediately return -1
@@ -19,6 +19,9 @@ def checkout(skus):
         num_a = 0
         # Collecting the number of Bs
         num_b = 0
+
+        # Collect num of E
+        num_e = 0
 
         # No need to collect other letter as they do not have an offer
 
@@ -36,12 +39,37 @@ def checkout(skus):
             elif letter == 'D':
                 # Since D does not have an offer we can directly add its price to the total
                 total += checkout_dict['D']
+            elif letter == 'E':
+                num_e += 1
+                total += checkout_dict['E']
             else:
                 # If an incorrect letter is passed we return -1
                 return -1 
         
         # Work out the number of times a user buys A in accordance to the offer:
         # We can use the floor division to see the number of time the customer triggers the offer:
+
+        def value_from_a(num_a):
+            value_a = 0
+
+            offer_1_a = num_a // 5
+            num_a -= (offer_1_a*5)
+
+            offer_2_a = num_a // 3
+            num_a -= (offer_2_a * 3)
+
+            value_a += (offer_1_a*200) + (offer_2_a*130) + (num_a * 50) 
+
+            return value_a
+
+        def value_from_b(num_b):
+            value_b = 0
+
+            offer_b = num_b // 2
+            num_b -= (offer_b*2)
+
+            value_b += (offer_b*45) + (num_b*30)
+
         offer_a = num_a // 3 # number of times the offer for A is triggered
         offer_a_amount = 130 # the offer amount for A
         # Same for the offer on B:
@@ -67,6 +95,7 @@ def checkout(skus):
         return total
 
         
+
 
 
 
