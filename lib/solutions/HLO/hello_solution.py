@@ -10,7 +10,8 @@ def hello(friend_name):
         raise TypeError(f"Expected string value, but received friend_name={friend_name} (type: {type(friend_name).__name__})")
     # Say hello to the inputted string
     else:
-        return f"Hello, World!"
+        return f"Hello, {friend_name}!"
+
 
 
 
