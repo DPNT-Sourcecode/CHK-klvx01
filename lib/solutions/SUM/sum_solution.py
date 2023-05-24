@@ -3,7 +3,7 @@
 # In this code we are implementing a system that adds two numbers together
 # Constraints: 
 # x (first integer): positive integer between 0 and 100 [in this case I assumed inclusive of 0 and 100]
-# y (secoind integer): positive integer between 0 and 100 [in this case I assumed inclusive of 0 and 100]
+# y (second integer): positive integer between 0 and 100 [in this case I assumed inclusive of 0 and 100]
 
 
 def compute(x, y):
@@ -22,5 +22,3 @@ def compute(x, y):
     # Else return the sum of the two inputted values
     else: 
         return x + y
-
-
