@@ -6,16 +6,27 @@
 
 def checkout(skus):
     # Set up checkout dictionary to store all the prices of each item. 
-    # This allows us to chnage prices of items later if needed
-    checkout_dict = {'A':50,'B':30,'C':20,'D':15, 'E': 40, 'F': 10,'G':20,'H':10,'I':35,'J':60,'K':80,'L':90,'M':15,'N':40,'O':10,'P':50,'Q':30,'R':50,'S':30,'T':20,'U':40,'V':50,'W':20,'X':90,'Y':10,'Z':50}
-    items_with_offers = ['A','B','E','F','H','K','N','P','Q','R','U','V']
+
+    
+    # --------------------------------------------------------------------
+    # Creating a dictionary for all the prices and items in relevant offers
+
+    checkout_dict = {'A':{'price':50,'offer1':[5,200],'offer2':[3,130]},'B':{'price':30,'offer1':[2,45],'offer2':None},'C':20,'D':15, 'E': {'price':40,'offer1':None,'offer2':None}, 'F': {'price':10,'offer1':None,'offer2':None},'G':20,'H':{'price':10,'offer1':[10,80],'offer2':[5,45]},'I':35,'J':60,'K':{'price':80,'offer1':[2,150],'offer2':None},'L':90,'M':{'price':15,'offer1':None,'offer2':None},'N':{'price':40,'offer1':None,'offer2':None},'O':10,'P':{'price':50,'offer1':[5,200],'offer2':None},'Q':{'price':30,'offer1':[3,80],'offer2':None},'R':{'price':50,'offer1':None,'offer2':None},'S':30,'T':20,'U':{'price':40,'offer1':None,'offer2':None},'V':{'price':50,'offer1':[3,130],'offer2':[2,90]},'W':20,'X':90,'Y':10,'Z':50}
+
+    # Identifying all items involved in an offer
+    items_with_offers = ['A','B','E','F','H','K','M','N','P','Q','R','U','V']
+
+    # A way to track the number of items involved in offers
     item_count = {}
+    # --------------------------------------------------------------------
+
     if not isinstance(skus,str):
         # If the input is not a string we immediately return -1
         return -1
     else:
         total = 0
 
+        # Iterating through each item in the string
         for letter in skus:
             if letter in items_with_offers:
                 try:
@@ -24,19 +35,23 @@ def checkout(skus):
                     item_count[f"num_{letter}"] = 1
 
             else:
-                total += checkout_dict[letter]
+                try:
+                    total += checkout_dict[letter]
+                except:
+                    return -1
+    # --------------------------------------------------------------------
 
+    # This function calculates the value that a set of the same item will cost
+    def value_letter(letter,offer1,offer2,original_price,item_count):
         
-        def value_letter(letter,offer1,offer2,original_price):
-            # offer 1 = [3,130]
-            # offer 2 = [5,200]
-            global item_count
+        try:
             num_letter = item_count[f"num_{letter}"] 
             value = 0
 
             offer_1_trig = 0
             offer_2_trig = 0
 
+            # Applying the offers of the items
             if num_letter > 0:
                 if offer1 != None:
                     offer_1_trig = num_letter // offer1[0]
@@ -49,173 +64,71 @@ def checkout(skus):
                         value += (offer_2_trig * offer2[1])
 
                     else:
-                          pass
-                    
+                        pass
+                
+                # Adding any extra items not invoved in the bundle deal
                 value += (num_letter * original_price)
 
                 return value
-                  
+                
             else:
                 return 0
-
-        
-        # Offer for E
-        try:
-            offer_E_trigger = item_count['num_E'] // 3
-            item_count['num_B'] -= offer_E_trigger
         except:
-            pass
+            return 0
+    # --------------------------------------------------------------------
 
-        # Offer for F
-        try:
-            offer_F_trigger = item_count['num_F'] // 3
-            item_count['num_F'] -= offer_F_trigger
-        except:
-            pass
+    # This function updates the item count of the items involed in offers to account for any free items
+    def update_item_count(letter1,letter2,discount_amount,item_count):
+        
+        if letter1 != None and letter2 != None:
+            try:
+                free_item_count = item_count[f'num_{letter1}'] // discount_amount
+                try:
+                    item_count[f'num_{letter2}'] -= free_item_count
+                    if item_count[f'num_{letter2}'] < 0 :
+                        item_count[f'num_{letter2}'] = 0
+                    else:
+                        pass
+                except:
+                    pass  
+            except:
+                pass
+        else:
+            try:
+                free_item_count = item_count[f'num_{letter1}'] // discount_amount
+                item_count[f'num_{letter1}'] -= free_item_count
+                if item_count[f'num_{letter1}'] < 0:
+                    item_count[f'num_{letter1}'] = 0
+                else:
+                    pass
+            except:
+                pass
 
-        try:
-            offer_N_trigger = item_count['num_N'] // 3
-            item_count['num_M'] -= offer_N_trigger
-        except:
-            pass
+    
+    # Update all item counts involved in free item offers
 
-        try:
-            offer_R_trigger = item_count['num_R'] // 3
-            item_count['num_Q'] -= offer_R_trigger
-        except:
-            pass
+    update_item_count('E','B',2,item_count)
+    update_item_count('F',None,3,item_count)
+    update_item_count('N','M',3,item_count)
+    update_item_count('R','Q',3,item_count)
+    update_item_count('U',None,4,item_count)
 
-        try:
-            offer_U_trigger = item_count['num_U'] // 4
-            item_count['num_U'] -= offer_U_trigger
-        except:
-            pass
+    # --------------------------------------------------------------------
+
+    # Appending the values of items that are involved in offers into an array
+    values = []
+
+    for i in range(len(items_with_offers)):
+        values.append(value_letter(items_with_offers[i],checkout_dict[items_with_offers[i]]['offer1'],checkout_dict[items_with_offers[i]]['offer2'],checkout_dict[items_with_offers[i]]['price'],item_count))
+        
+
+    # Taking the sum of the array and adding it onto the total
+    total += sum(values)
+    
+    return total
 
 
-
-
-        value_A = value_letter('A',[5,200],[3,130],50)
-        value_B = value_letter('B',[2,45],None,30)
-        value_H = value_letter('H',[10,80],[5,45],10)
-        value_K = value_letter('K',[2,150],None,80)
-        value_P = value_letter('P',[5,200],None,50)
-        value_Q = value_letter('Q',[3,80],None,30)
-        value_V = value_letter('V',[3,130],[2,90],50)
 
         
 
-            
-
-
-
-        # # Set the total for the amount of shopping.
-        # total = 0
-        # # Collecting the number of As
-        # num_a = 0
-        # # Collecting the number of Bs
-        # num_b = 0
-
-        # # Collect num of E
-        # num_e = 0
-
-        # # Collect num of f
-        # num_f = 0
-
-        # # No need to collect other letter as they do not have an offer
-
-        # # Cycle through each sku in the inputted string
-        # for letter in skus:
-        #     if letter == 'A':
-        #         # Collect the number of As
-        #         num_a += 1
-        #     elif letter == 'B':
-        #         # Collect the number of Bs
-        #         num_b += 1
-        #     elif letter == 'C':
-        #         # Since C does not have an offer we can directly add its price to the total
-        #         total += checkout_dict['C']
-        #     elif letter == 'D':
-        #         # Since D does not have an offer we can directly add its price to the total
-        #         total += checkout_dict['D']
-        #     elif letter == 'E':
-        #         num_e += 1
-        #         total += checkout_dict['E']
-        #     elif letter == 'F':
-        #         num_f += 1
-        #         total += checkout_dict['F']
-        #     else:
-        #         # If an incorrect letter is passed we return -1
-        #         return -1 
-        
-        # # Work out the number of times a user buys A in accordance to the offer:
-        # # We can use the floor division to see the number of time the customer triggers the offer:
-
-        # def value_from_a(num_a):
-        #     if num_a > 0:
-        #         # Set value of sum of items A
-        #         value_a = 0
-
-        #         # Check to see the number of times the first offer is triggered
-        #         offer_1_a = num_a // 5
-
-        #         # Reduce the number of items used to trigger this offer from the original number of As
-        #         num_a -= (offer_1_a*5)
-
-        #         # Check to see the number of times the second offer is triggered
-        #         offer_2_a = num_a // 3
-        #         # Reduce the number of items used to trigger this offer from the original number of As
-        #         num_a -= (offer_2_a * 3)
-                
-        #         # Add all the respective values of A
-        #         value_a += (offer_1_a*200) + (offer_2_a*130) + (num_a * 50) 
-
-        #         return value_a
-        #     else:
-        #         return 0
-
-        # def value_from_b(num_b):
-        #     if num_b > 0:
-        #         # Set value of sum of items B
-        #         value_b = 0
-
-        #         # Check to see the number of times the offer is triggered
-        #         offer_b = num_b // 2
-
-        #         # Reduce the number of items used to trigger this offer from the original number of Bs
-        #         num_b -= (offer_b*2)
-
-        #         # Add all the respective values of B
-        #         value_b += (offer_b*45) + (num_b*30)
-                
-        #         return value_b
-        #     else:
-        #         return 0
-            
-        
-
-        # # Check the number of E bought:
-        # offer_E = num_e // 2
-
-        # # Reduce that number from the number of B bought:
-        # num_b -= offer_E
-
-        # # Use function to calculate the value from the A items
-        # value_a = value_from_a(num_a)
-        
-        # # Use function to calculate the value from the B items
-        # value_b = value_from_b(num_b)
-        
-       
-        # # Add these values to the total
-        # total += value_a + value_b
-
-        #  # Removing added cost of F 
-        # offer_F = num_f // 3 # this is the number of free F a customer can get
-
-        # # Remove the value of these F from total 
-        # total -= (offer_F * checkout_dict['F'])
-        # # Return total
-        # return total
-
-        
 
